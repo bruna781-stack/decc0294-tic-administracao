@@ -1,0 +1,31 @@
+ID,Nome,Idade,Cargo,Departamento,Tempo_Empresa_Anos,Escolaridade,Perfil_Profissional,Area_Destaque_1,Area_Destaque_2,Avaliacao_Desempenho_1_5
+1,Ana Beatriz Souza,28,Analista Administrativo,Administrativo,2,Superior Completo,Organizada e detalhista,Gestão de Processos,Atendimento ao Cliente,4.2
+2,Carlos Eduardo Lima,35,Gerente Financeiro,Financeiro,7,MBA em Finanças,Liderança estratégica,Planejamento Financeiro,Gestão de Equipes,4.8
+3,Fernanda Oliveira,26,Assistente de RH,Recursos Humanos,1,Superior Incompleto,Comunicativa e empática,Recrutamento e Seleção,Comunicação Interna,3.9
+4,João Pedro Santos,42,Coordenador de TI,Tecnologia da Informação,10,Superior Completo,Analítico e resolutivo,Suporte Técnico,Segurança da Informação,4.5
+5,Mariana Costa,31,Analista de Marketing,Marketing,3,Pós-Graduação em Marketing,Criativa e inovadora,Marketing Digital,Gestão de Redes Sociais,4.3
+6,Ricardo Almeida,45,Diretor Comercial,Comercial,12,MBA em Gestão Comercial,Negociador e estratégico,Negociação,Vendas Consultivas,4.9
+7,Patrícia Gomes,29,Analista Contábil,Financeiro,4,Ciências Contábeis,Detalhista e precisa,Análise Contábil,Conciliação Fiscal,4.1
+8,Lucas Ferreira,24,Auxiliar Logístico,Logística,1,Ensino Médio Completo,Ágil e operacional,Controle de Estoque,Distribuição,3.7
+9,Camila Ribeiro,33,Psicóloga Organizacional,Recursos Humanos,5,Psicologia - CRP Ativo,Empática e observadora,Clima Organizacional,Treinamento e Desenvolvimento,4.6
+10,Thiago Martins,38,Engenheiro de Produção,Operações,8,Engenharia de Produção,Planejador e metódico,Gestão de Projetos,Melhoria Contínua,4.4
+11,Juliana Castro,27,Designer Gráfico,Marketing,2,Design Gráfico,Criativa e visual,Criação Visual,Branding,4.0
+12,Marcos Vinícius Rocha,50,Gerente de Operações,Operações,15,Administração,Eficiente e disciplinado,Gestão de Equipes,Logística e Operações,4.7
+13,Beatriz Lima,23,Estagiária Administrativa,Administrativo,0.5,Cursando Administração,Proativa e curiosa,Organização de Documentos,Apoio Administrativo,3.5
+14,Felipe Barbosa,36,Analista de Dados,Tecnologia da Informação,4,Ciência de Dados,Analítico e curioso,Análise de Dados,Business Intelligence,4.6
+15,Renata Dias,40,Coordenadora de RH,Recursos Humanos,9,Psicologia + MBA em Gestão de Pessoas,Estratégica e acolhedora,Gestão de Pessoas,Desenvolvimento de Lideranças,4.8
+16,Gustavo Henrique Pinto,30,Vendedor Externo,Comercial,3,Superior Completo,Persuasivo e resiliente,Negociação,Pós-Venda,4.2
+17,Larissa Mendes,32,Advogada Corporativa,Jurídico,6,Direito - OAB Ativa,Crítica e argumentativa,Contratos Empresariais,Compliance,4.5
+18,Paulo Sérgio Nogueira,48,Contador Sênior,Financeiro,14,Ciências Contábeis + CRC,Conservador e confiável,Auditoria Interna,Planejamento Tributário,4.7
+19,Aline Cardoso,26,Analista de Suporte,Atendimento ao Cliente,2,Superior Completo,Paciente e comunicativa,Atendimento ao Cliente,Resolução de Problemas,4.0
+20,Diego Rodrigues,34,Supervisor de Logística,Logística,6,Logística,Operacional e líder,Gestão de Estoque,Liderança Operacional,4.3
+21,Sofia Carvalho,29,Nutricionista do Trabalho,Saúde e Bem-estar,3,Nutrição - CRN Ativo,Cuidadosa e educativa,Saúde Ocupacional,Programas de Bem-estar,4.1
+22,Bruno Correia,37,Desenvolvedor Full Stack,Tecnologia da Informação,5,Sistemas de Informação,Inovador e lógico,Desenvolvimento de Software,Automação de Processos,4.6
+23,Vanessa Teixeira,31,Analista de Compras,Administrativo,4,Administração,Negociadora e organizada,Gestão de Fornecedores,Redução de Custos,4.2
+24,Eduardo Moreira,44,Auditor Interno,Auditoria,11,Ciências Contábeis,Ético e rigoroso,Auditoria e Controles,Riscos e Compliance,4.5
+25,Daniela Freitas,28,Jornalista Corporativa,Comunicação,3,Comunicação Social,Articulada e criativa,Comunicação Interna,Gestão de Crises,4.0
+26,Rafael Silva,39,Gerente de Projetos,Operações,7,PMP Certificado,Estratégico e colaborativo,Gestão de Projetos,Metodologias Ágeis,4.7
+27,Tatiane Rocha,25,Recepcionista,Administrativo,1,Ensino Médio Completo,Simpática e organizada,Atendimento Presencial,Organização de Agenda,3.8
+28,André Luiz Pereira,52,Consultor Sênior,Estratégia,18,Doutorado em Administração,Visionário e mentor,Planejamento Estratégico,Mentoria Executiva,4.9
+29,Isabela Nunes,30,Analista de Qualidade,Qualidade,4,Engenharia de Qualidade,Rigorosa e sistemática,Controle de Qualidade,Normas ISO,4.4
+30,Leonardo Farias,33,Técnico de Segurança do Trabalho,Saúde e Bem-estar,5,Técnico em Segurança do Trabalho,Preventivo e atento,Segurança Ocupacional,Treinamento de Equipes,4.3
