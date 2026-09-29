@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Análise Descritiva de RH — 30 Funcionários</title>
+<style>
+:root{--vinho:#8D0333;--dourado:#D4B277;--teal:#0AB0AB;--card:#F5F5F5;--linha:#E2E2E2;--muted:#6B6B6B}
+*{box-sizing:border-box}body{margin:0;font-family:"Segoe UI",Calibri,system-ui,sans-serif;color:#333;line-height:1.6}
+.barra{height:14px;background:var(--vinho)}
+.capa{background:var(--vinho);color:#fff;padding:44px 28px}.dentro{max-width:900px;margin:0 auto}
+.cod{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--dourado);font-weight:600;margin:0 0 10px}
+.capa h1{margin:0 0 8px;font-size:32px}.capa p{margin:0;color:#F2E4E9}
+.filete{height:4px;background:var(--dourado)}
+main{max-width:900px;margin:0 auto;padding:28px}
+h2{color:var(--vinho);margin-top:34px}table{border-collapse:collapse;width:100%;font-size:15px;margin:12px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--linha)}
+th{color:var(--vinho);font-size:13px;text-transform:uppercase;letter-spacing:.05em}
+.cx{background:var(--card);border-left:4px solid var(--teal);padding:14px 18px;border-radius:3px;margin:16px 0}
+ul{margin:8px 0}footer{color:var(--muted);font-size:13px;margin:30px 0}
+</style>
+</head>
+<body>
+<div class="barra"></div>
+<header class="capa"><div class="dentro">
+<p class="cod">Simulação RH · 30 funcionários</p>
+<h1>Análise Descritiva de Recursos Humanos</h1>
+<p>Perfil profissional e áreas de destaque · 29/09/2026 · Fonte: dados/simulacao_rh_30_funcionarios.csv (dados simulados para fins didáticos)</p>
+</div></header>
+<div class="filete"></div>
+<main>
+<h2>1. Objetivo e método</h2>
+<p>Descrever o perfil de 30 funcionários simulados: idade, cargo, departamento, tempo de empresa, escolaridade, perfil profissional, duas áreas de destaque e avaliação de desempenho (1 a 5). Estatística descritiva: média, mediana, desvio-padrão, mínimo, máximo e frequências.</p>
+
+<h2>2. Perfil demográfico e funcional</h2>
+<p>Idade média de <b>34,2 anos</b> (mediana 32,5; desvio 7,9), de 23 a 52 anos. Metade da equipe tem entre 28 e 39 anos — equilíbrio entre jovens e seniores.</p>
+<p>Tempo médio de empresa de <b>5,9 anos</b> (mediana 4,5), de 0,5 a 18 anos. Núcleo experiente acima de 10 anos na direção, gerência e auditoria.</p>
+
+<h2>3. Avaliação de desempenho</h2>
+<p>Média de <b>4,34 / 5</b> (mediana 4,35; desvio 0,36; mín. 3,5; máx. 4,9). 75% têm nota ≥ 4,1. Notas máximas no Diretor Comercial e Consultor Sênior; mínimas em estágio e auxiliar — curva de aprendizagem esperada.</p>
+<table><tr><th>Estatística</th><th>Idade</th><th>Tempo (anos)</th><th>Avaliação (1–5)</th></tr>
+<tr><td>Média</td><td>34,17</td><td>5,85</td><td>4,34</td></tr>
+<tr><td>Mediana</td><td>32,5</td><td>4,5</td><td>4,35</td></tr>
+<tr><td>Desvio-padrão</td><td>7,90</td><td>4,51</td><td>0,36</td></tr>
+<tr><td>Mínimo</td><td>23</td><td>0,5</td><td>3,5</td></tr>
+<tr><td>Máximo</td><td>52</td><td>18,0</td><td>4,9</td></tr></table>
+
+<h2>4. Distribuição por departamento</h2>
+<p>15 setores. Maiores: Administrativo (4), Financeiro, RH, TI e Operações (3 cada).</p>
+<table><tr><th>Departamento</th><th>Nº</th><th>%</th></tr>
+<tr><td>Administrativo</td><td>4</td><td>13,3%</td></tr>
+<tr><td>Financeiro</td><td>3</td><td>10,0%</td></tr>
+<tr><td>Recursos Humanos</td><td>3</td><td>10,0%</td></tr>
+<tr><td>Tecnologia da Informação</td><td>3</td><td>10,0%</td></tr>
+<tr><td>Operações</td><td>3</td><td>10,0%</td></tr>
+<tr><td>Marketing</td><td>2</td><td>6,7%</td></tr>
+<tr><td>Comercial</td><td>2</td><td>6,7%</td></tr>
+<tr><td>Logística</td><td>2</td><td>6,7%</td></tr>
+<tr><td>Saúde e Bem-estar</td><td>2</td><td>6,7%</td></tr>
+<tr><td>Jurídico</td><td>1</td><td>3,3%</td></tr>
+<tr><td>Atendimento ao Cliente</td><td>1</td><td>3,3%</td></tr>
+<tr><td>Auditoria</td><td>1</td><td>3,3%</td></tr>
+<tr><td>Comunicação</td><td>1</td><td>3,3%</td></tr>
+<tr><td>Estratégia</td><td>1</td><td>3,3%</td></tr>
+<tr><td>Qualidade</td><td>1</td><td>3,3%</td></tr></table>
+
+<h2>5. Escolaridade</h2>
+<p>Qualificação elevada: só 3 com Ensino Médio/técnico inicial. Demais com Superior Completo, 7 MBAs/pós, 1 PMP, 1 doutorado e registros ativos (OAB, CRC, CRP, CRN).</p>
+
+<h2>6. Perfil e áreas de destaque</h2>
+<p>28 áreas primárias distintas; Negociação e Gestão de Projetos repetem 2 vezes. Clusters: (a) Gestão e liderança, (b) Dados e tecnologia, (c) Finanças e controle, (d) Pessoas e comunicação.</p>
+
+<h2>7. Avaliação média por departamento</h2>
+<table><tr><th>Departamento</th><th>Média</th></tr>
+<tr><td>Estratégia</td><td>4,90</td></tr>
+<tr><td>Operações</td><td>4,60</td></tr>
+<tr><td>Tecnologia da Informação</td><td>4,57</td></tr>
+<tr><td>Comercial</td><td>4,55</td></tr>
+<tr><td>Financeiro</td><td>4,53</td></tr>
+<tr><td>Auditoria</td><td>4,50</td></tr>
+<tr><td>Jurídico</td><td>4,50</td></tr>
+<tr><td>Recursos Humanos</td><td>4,43</td></tr>
+<tr><td>Qualidade</td><td>4,40</td></tr>
+<tr><td>Saúde e Bem-estar</td><td>4,20</td></tr>
+<tr><td>Marketing</td><td>4,15</td></tr>
+<tr><td>Atendimento ao Cliente</td><td>4,00</td></tr>
+<tr><td>Comunicação</td><td>4,00</td></tr>
+<tr><td>Logística</td><td>4,00</td></tr>
+<tr><td>Administrativo</td><td>3,92</td></tr></table>
+
+<h2>8. Conclusões e recomendações</h2>
+<div class="cx"><ul>
+<li><b>Ponto forte:</b> equipe qualificada, média 4,34, com diversidade de competências.</li>
+<li><b>Retenção:</b> formalizar mentoria com o núcleo sênior (10–18 anos).</li>
+<li><b>Desenvolvimento:</b> priorizar Administrativo, Logística e Atendimento; trilha para estagiário e auxiliar.</li>
+<li><b>Alocação:</b> montar squads pelos destaques — ex.: Felipe Barbosa (Dados/BI) + Bruno Correia (Automação); Renata Dias + Camila Ribeiro (clima e liderança).</li>
+<li><b>Limitação:</b> dados 100% simulados; não usar para decisões trabalhistas.</ul></div>
+<p><i>Anexos: CSV, TXT, XLSX e DOCX na pasta dados/. Versão interativa com D3.js em dashboard-rh-d3js.html.</i></p>
+<footer>Gerado em 29/09/2026 a partir de dados/simulacao_rh_30_funcionarios.csv</footer>
+</main>
+</body>
+</html>

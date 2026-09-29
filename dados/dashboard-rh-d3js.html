@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard RH Interativo · 30 Funcionários · D3.js</title>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<style>
+:root{--vinho:#8D0333;--dourado:#D4B277;--teal:#0AB0AB;--amarelo:#FEC84D;--card:#F5F5F5;--linha:#E2E2E2;--txt:#1A1A1A;--muted:#6B6B6B}
+*{box-sizing:border-box}body{margin:0;font-family:"Segoe UI",Calibri,system-ui,sans-serif;color:#333;background:#fff}
+.barra{height:14px;background:var(--vinho)}
+.capa{background:var(--vinho);color:#fff;padding:44px 28px 34px}.dentro{max-width:1100px;margin:0 auto}
+.capa .cod{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--dourado);font-weight:600;margin:0 0 10px}
+.capa h1{margin:0 0 10px;font-size:34px}.capa p{margin:0;color:#F2E4E9;max-width:75ch}
+.filete{height:4px;background:var(--dourado)}
+main{max-width:1100px;margin:0 auto;padding:28px}
+h2{color:var(--vinho);margin:34px 0 4px}.sub{color:var(--muted);margin:0 0 14px;font-size:15px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:18px 0}
+.kpi{background:var(--card);border:1px solid var(--linha);border-top:4px solid var(--dourado);border-radius:4px;padding:14px 16px}
+.kpi b{display:block;font-size:28px;color:var(--vinho)}.kpi span{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.painel{border:1px solid var(--linha);border-radius:4px;padding:16px 18px;margin:16px 0;background:#fff}
+.painel h3{margin:0 0 4px;color:var(--txt)}.painel p.hint{margin:0 0 10px;color:var(--muted);font-size:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:850px){.grid2{grid-template-columns:1fr}}
+.tooltip{position:fixed;pointer-events:none;background:#1A1A1A;color:#fff;font-size:13px;padding:8px 10px;border-radius:4px;opacity:0;max-width:280px;z-index:10}
+.bar:hover{opacity:.8}.dot:hover{stroke:#000;stroke-width:2}
+.filtros{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.filtros input,.filtros select{padding:8px 10px;font-size:14px;border:1px solid var(--linha);border-radius:4px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin-top:10px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--linha)}
+th{color:var(--vinho);font-size:12px;text-transform:uppercase;letter-spacing:.05em;position:sticky;top:0;background:#fff}
+.wrap-tab{max-height:420px;overflow:auto;border:1px solid var(--linha);border-radius:4px}
+footer{color:var(--muted);font-size:13px;margin:30px 0 10px}
+.axis text{font-size:11px}.axis path,.axis line{stroke:#bbb}
+</style>
+</head>
+<body>
+<div class="barra"></div>
+<header class="capa"><div class="dentro">
+<p class="cod">DECC0294 · RH · Simulação 30 funcionários</p>
+<h1>Dashboard interativo de Recursos Humanos</h1>
+<p>Visualização construída com <b>D3.js v7</b> (biblioteca JavaScript para dados — você mencionou “3djs”). Passe o mouse nas barras e pontos para ver detalhes. Use os filtros para explorar a tabela. Fonte: <code>dados/simulacao_rh_30_funcionarios.csv</code> (dados simulados).</p>
+</div></header>
+<div class="filete"></div>
+<main>
+<div class="kpis" id="kpis"></div>
+
+<h2>1. Distribuição por departamento</h2>
+<p class="sub">Contagem de funcionários por setor. Interativo: tooltip com valores.</p>
+<div class="painel"><h3>Funcionários por departamento</h3><p class="hint">Barras horizontais · passe o mouse para ver o percentual</p><div id="chart-depto"></div></div>
+
+<div class="grid2">
+<div class="painel"><h3>Avaliação média por departamento</h3><p class="hint">Escala 1–5 · linha tracejada = média geral 4,34</p><div id="chart-avaliacao"></div></div>
+<div class="painel"><h3>Idade × Avaliação</h3><p class="hint">Cada ponto = 1 funcionário · tamanho = tempo de empresa · cor = departamento</p><div id="chart-scatter"></div></div>
+</div>
+
+<h2>2. Explorar os 30 perfis</h2>
+<p class="sub">Busca por nome/cargo/perfil + filtro por departamento.</p>
+<div class="painel">
+<div class="filtros">
+<input id="busca" type="search" placeholder="Buscar: ex. dados, líder, marketing..." size="36">
+<select id="filtro-depto"><option value="">Todos os departamentos</option></select>
+</div>
+<div class="wrap-tab"><table><thead><tr>
+<th>Nome</th><th>Cargo</th><th>Depto</th><th>Idade</th><th>Tempo</th><th>Perfil</th><th>Destaque 1</th><th>Destaque 2</th><th>Aval.</th>
+</tr></thead><tbody id="corpo"></tbody></table></div>
+<p class="hint" id="contagem"></p>
+</div>
+
+<footer>Ferramenta: D3.js via CDN (cdn.jsdelivr.net/npm/d3@7). Para abrir offline sem internet, os números principais estão nos cartões acima; os gráficos exigem conexão na primeira carga. Arquivos relacionados: CSV, TXT, XLSX e DOCX na pasta <code>dados/</code>.</footer>
+</main>
+<div class="tooltip" id="tip"></div>
+<script>
+const dados = [
+{id:1,nome:"Ana Beatriz Souza",idade:28,cargo:"Analista Administrativo",depto:"Administrativo",tempo:2,escol:"Superior Completo",perfil:"Organizada e detalhista",a1:"Gestão de Processos",a2:"Atendimento ao Cliente",av:4.2},
+{id:2,nome:"Carlos Eduardo Lima",idade:35,cargo:"Gerente Financeiro",depto:"Financeiro",tempo:7,escol:"MBA em Finanças",perfil:"Liderança estratégica",a1:"Planejamento Financeiro",a2:"Gestão de Equipes",av:4.8},
+{id:3,nome:"Fernanda Oliveira",idade:26,cargo:"Assistente de RH",depto:"Recursos Humanos",tempo:1,escol:"Superior Incompleto",perfil:"Comunicativa e empática",a1:"Recrutamento e Seleção",a2:"Comunicação Interna",av:3.9},
+{id:4,nome:"João Pedro Santos",idade:42,cargo:"Coordenador de TI",depto:"Tecnologia da Informação",tempo:10,escol:"Superior Completo",perfil:"Analítico e resolutivo",a1:"Suporte Técnico",a2:"Segurança da Informação",av:4.5},
+{id:5,nome:"Mariana Costa",idade:31,cargo:"Analista de Marketing",depto:"Marketing",tempo:3,escol:"Pós-Graduação em Marketing",perfil:"Criativa e inovadora",a1:"Marketing Digital",a2:"Gestão de Redes Sociais",av:4.3},
+{id:6,nome:"Ricardo Almeida",idade:45,cargo:"Diretor Comercial",depto:"Comercial",tempo:12,escol:"MBA em Gestão Comercial",perfil:"Negociador e estratégico",a1:"Negociação",a2:"Vendas Consultivas",av:4.9},
+{id:7,nome:"Patrícia Gomes",idade:29,cargo:"Analista Contábil",depto:"Financeiro",tempo:4,escol:"Ciências Contábeis",perfil:"Detalhista e precisa",a1:"Análise Contábil",a2:"Conciliação Fiscal",av:4.1},
+{id:8,nome:"Lucas Ferreira",idade:24,cargo:"Auxiliar Logístico",depto:"Logística",tempo:1,escol:"Ensino Médio Completo",perfil:"Ágil e operacional",a1:"Controle de Estoque",a2:"Distribuição",av:3.7},
+{id:9,nome:"Camila Ribeiro",idade:33,cargo:"Psicóloga Organizacional",depto:"Recursos Humanos",tempo:5,escol:"Psicologia - CRP Ativo",perfil:"Empática e observadora",a1:"Clima Organizacional",a2:"Treinamento e Desenvolvimento",av:4.6},
+{id:10,nome:"Thiago Martins",idade:38,cargo:"Engenheiro de Produção",depto:"Operações",tempo:8,escol:"Engenharia de Produção",perfil:"Planejador e metódico",a1:"Gestão de Projetos",a2:"Melhoria Contínua",av:4.4},
+{id:11,nome:"Juliana Castro",idade:27,cargo:"Designer Gráfico",depto:"Marketing",tempo:2,escol:"Design Gráfico",perfil:"Criativa e visual",a1:"Criação Visual",a2:"Branding",av:4.0},
+{id:12,nome:"Marcos Vinícius Rocha",idade:50,cargo:"Gerente de Operações",depto:"Operações",tempo:15,escol:"Administração",perfil:"Eficiente e disciplinado",a1:"Gestão de Equipes",a2:"Logística e Operações",av:4.7},
+{id:13,nome:"Beatriz Lima",idade:23,cargo:"Estagiária Administrativa",depto:"Administrativo",tempo:0.5,escol:"Cursando Administração",perfil:"Proativa e curiosa",a1:"Organização de Documentos",a2:"Apoio Administrativo",av:3.5},
+{id:14,nome:"Felipe Barbosa",idade:36,cargo:"Analista de Dados",depto:"Tecnologia da Informação",tempo:4,escol:"Ciência de Dados",perfil:"Analítico e curioso",a1:"Análise de Dados",a2:"Business Intelligence",av:4.6},
+{id:15,nome:"Renata Dias",idade:40,cargo:"Coordenadora de RH",depto:"Recursos Humanos",tempo:9,escol:"Psicologia + MBA em Gestão de Pessoas",perfil:"Estratégica e acolhedora",a1:"Gestão de Pessoas",a2:"Desenvolvimento de Lideranças",av:4.8},
+{id:16,nome:"Gustavo Henrique Pinto",idade:30,cargo:"Vendedor Externo",depto:"Comercial",tempo:3,escol:"Superior Completo",perfil:"Persuasivo e resiliente",a1:"Negociação",a2:"Pós-Venda",av:4.2},
+{id:17,nome:"Larissa Mendes",idade:32,cargo:"Advogada Corporativa",depto:"Jurídico",tempo:6,escol:"Direito - OAB Ativa",perfil:"Crítica e argumentativa",a1:"Contratos Empresariais",a2:"Compliance",av:4.5},
+{id:18,nome:"Paulo Sérgio Nogueira",idade:48,cargo:"Contador Sênior",depto:"Financeiro",tempo:14,escol:"Ciências Contábeis + CRC",perfil:"Conservador e confiável",a1:"Auditoria Interna",a2:"Planejamento Tributário",av:4.7},
+{id:19,nome:"Aline Cardoso",idade:26,cargo:"Analista de Suporte",depto:"Atendimento ao Cliente",tempo:2,escol:"Superior Completo",perfil:"Paciente e comunicativa",a1:"Atendimento ao Cliente",a2:"Resolução de Problemas",av:4.0},
+{id:20,nome:"Diego Rodrigues",idade:34,cargo:"Supervisor de Logística",depto:"Logística",tempo:6,escol:"Logística",perfil:"Operacional e líder",a1:"Gestão de Estoque",a2:"Liderança Operacional",av:4.3},
+{id:21,nome:"Sofia Carvalho",idade:29,cargo:"Nutricionista do Trabalho",depto:"Saúde e Bem-estar",tempo:3,escol:"Nutrição - CRN Ativo",perfil:"Cuidadosa e educativa",a1:"Saúde Ocupacional",a2:"Programas de Bem-estar",av:4.1},
+{id:22,nome:"Bruno Correia",idade:37,cargo:"Desenvolvedor Full Stack",depto:"Tecnologia da Informação",tempo:5,escol:"Sistemas de Informação",perfil:"Inovador e lógico",a1:"Desenvolvimento de Software",a2:"Automação de Processos",av:4.6},
+{id:23,nome:"Vanessa Teixeira",idade:31,cargo:"Analista de Compras",depto:"Administrativo",tempo:4,escol:"Administração",perfil:"Negociadora e organizada",a1:"Gestão de Fornecedores",a2:"Redução de Custos",av:4.2},
+{id:24,nome:"Eduardo Moreira",idade:44,cargo:"Auditor Interno",depto:"Auditoria",tempo:11,escol:"Ciências Contábeis",perfil:"Ético e rigoroso",a1:"Auditoria e Controles",a2:"Riscos e Compliance",av:4.5},
+{id:25,nome:"Daniela Freitas",idade:28,cargo:"Jornalista Corporativa",depto:"Comunicação",tempo:3,escol:"Comunicação Social",perfil:"Articulada e criativa",a1:"Comunicação Interna",a2:"Gestão de Crises",av:4.0},
+{id:26,nome:"Rafael Silva",idade:39,cargo:"Gerente de Projetos",depto:"Operações",tempo:7,escol:"PMP Certificado",perfil:"Estratégico e colaborativo",a1:"Gestão de Projetos",a2:"Metodologias Ágeis",av:4.7},
+{id:27,nome:"Tatiane Rocha",idade:25,cargo:"Recepcionista",depto:"Administrativo",tempo:1,escol:"Ensino Médio Completo",perfil:"Simpática e organizada",a1:"Atendimento Presencial",a2:"Organização de Agenda",av:3.8},
+{id:28,nome:"André Luiz Pereira",idade:52,cargo:"Consultor Sênior",depto:"Estratégia",tempo:18,escol:"Doutorado em Administração",perfil:"Visionário e mentor",a1:"Planejamento Estratégico",a2:"Mentoria Executiva",av:4.9},
+{id:29,nome:"Isabela Nunes",idade:30,cargo:"Analista de Qualidade",depto:"Qualidade",tempo:4,escol:"Engenharia de Qualidade",perfil:"Rigorosa e sistemática",a1:"Controle de Qualidade",a2:"Normas ISO",av:4.4},
+{id:30,nome:"Leonardo Farias",idade:33,cargo:"Técnico de Segurança do Trabalho",depto:"Saúde e Bem-estar",tempo:5,escol:"Técnico em Segurança do Trabalho",perfil:"Preventivo e atento",a1:"Segurança Ocupacional",a2:"Treinamento de Equipes",av:4.3}
+];
+const tip = d3.select("#tip");
+function showTip(html,event){tip.html(html).style("opacity",1).style("left",(event.clientX+14)+"px").style("top",(event.clientY+14)+"px");}
+function hideTip(){tip.style("opacity",0);}
+
+// KPIs
+const media = a => d3.mean(a);
+const kpis = [
+{v:dados.length,l:"funcionários"},
+{v:media(dados.map(d=>d.idade)).toFixed(1)+" anos",l:"idade média"},
+{v:media(dados.map(d=>d.tempo)).toFixed(1)+" anos",l:"tempo médio de empresa"},
+{v:media(dados.map(d=>d.av)).toFixed(2)+" / 5",l:"avaliação média"}
+];
+d3.select("#kpis").selectAll(".kpi").data(kpis).join("div").attr("class","kpi").html(d=>`<b>${d.v}</b><span>${d.l}</span>`);
+
+// Gráfico 1: por departamento
+const cont = d3.rollups(dados,v=>v.length,d=>d.depto).map(([depto,n])=>({depto,n})).sort((a,b)=>d3.descending(a.n,b.n));
+(function(){
+const W=480,H=cont.length*30+40,m={l:190,r:40,t:10,b:20};
+const svg=d3.select("#chart-depto").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%");
+const x=d3.scaleLinear().domain([0,d3.max(cont,d=>d.n)]).range([m.l,W-m.r]);
+const y=d3.scaleBand().domain(cont.map(d=>d.depto)).range([m.t,H-m.b]).padding(.2);
+svg.append("g").attr("transform",`translate(0,${H-m.b})`).call(d3.axisBottom(x).ticks(4).tickFormat(d=>d)).attr("class","axis");
+svg.append("g").attr("transform",`translate(${m.l},0)`).call(d3.axisLeft(y)).attr("class","axis");
+svg.selectAll(".bar").data(cont).join("rect").attr("class","bar")
+.attr("x",m.l).attr("y",d=>y(d.depto)).attr("height",y.bandwidth()).attr("width",d=>x(d.n)-m.l)
+.attr("fill","#8D0333")
+.on("mousemove",(e,d)=>showTip(`<b>${d.depto}</b><br>${d.n} funcionário(s) · ${(d.n/30*100).toFixed(1)}%`,e))
+.on("mouseleave",hideTip);
+svg.selectAll(".lbl").data(cont).join("text").attr("x",d=>x(d.n)+5).attr("y",d=>y(d.depto)+y.bandwidth()/2+4).text(d=>d.n).style("font-size","12px").style("font-weight","700");
+})();
+
+// Gráfico 2: avaliação média por depto
+const avgD = d3.rollups(dados,v=>d3.mean(v,d=>d.av),d=>d.depto).map(([depto,av])=>({depto,av:+av.toFixed(2)})).sort((a,b)=>d3.descending(a.av,b.av));
+(function(){
+const W=480,H=avgD.length*30+40,m={l:190,r:44,t:10,b:20};
+const svg=d3.select("#chart-avaliacao").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%");
+const x=d3.scaleLinear().domain([3.5,5]).range([m.l,W-m.r]);
+const y=d3.scaleBand().domain(avgD.map(d=>d.depto)).range([m.t,H-m.b]).padding(.2);
+svg.append("g").attr("transform",`translate(0,${H-m.b})`).call(d3.axisBottom(x).ticks(4)).attr("class","axis");
+svg.append("g").attr("transform",`translate(${m.l},0)`).call(d3.axisLeft(y)).attr("class","axis");
+const mg=media(dados.map(d=>d.av));
+svg.append("line").attr("x1",x(mg)).attr("x2",x(mg)).attr("y1",m.t).attr("y2",H-m.b).attr("stroke","#0AB0AB").attr("stroke-dasharray","5,4").attr("stroke-width",2);
+svg.selectAll(".bar").data(avgD).join("rect").attr("class","bar")
+.attr("x",m.l).attr("y",d=>y(d.depto)).attr("height",y.bandwidth()).attr("width",d=>x(d.av)-m.l)
+.attr("fill",d=>d.av>=mg?"#0AB0AB":"#D4B277")
+.on("mousemove",(e,d)=>showTip(`<b>${d.depto}</b><br>Média ${d.av.toFixed(2)}`,e)).on("mouseleave",hideTip);
+svg.selectAll(".lbl").data(avgD).join("text").attr("x",d=>x(d.av)+5).attr("y",d=>y(d.depto)+y.bandwidth()/2+4).text(d=>d.av.toFixed(2)).style("font-size","12px");
+})();
+
+// Gráfico 3: scatter idade x avaliação
+(function(){
+const W=480,H=340,m={l:44,r:14,t:14,b:38};
+const svg=d3.select("#chart-scatter").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%");
+const x=d3.scaleLinear().domain([20,55]).range([m.l,W-m.r]);
+const y=d3.scaleLinear().domain([3.3,5.1]).range([H-m.b,m.t]);
+const r=d3.scaleSqrt().domain([0.5,18]).range([4,13]);
+const cor=d3.scaleOrdinal(d3.schemeTableau10).domain([...new Set(dados.map(d=>d.depto))]);
+svg.append("g").attr("transform",`translate(0,${H-m.b})`).call(d3.axisBottom(x)).attr("class","axis");
+svg.append("g").attr("transform",`translate(${m.l},0)`).call(d3.axisLeft(y)).attr("class","axis");
+svg.append("text").attr("x",W/2).attr("y",H-4).text("Idade").style("font-size","12px").attr("text-anchor","middle");
+svg.append("text").attr("transform","rotate(-90)").attr("x",-H/2).attr("y",12).text("Avaliação").style("font-size","12px").attr("text-anchor","middle");
+svg.selectAll(".dot").data(dados).join("circle").attr("class","dot")
+.attr("cx",d=>x(d.idade)).attr("cy",d=>y(d.av)).attr("r",d=>r(d.tempo))
+.attr("fill",d=>cor(d.depto)).attr("opacity",.8)
+.on("mousemove",(e,d)=>showTip(`<b>${d.nome}</b><br>${d.cargo} · ${d.depto}<br>Idade ${d.idade} · ${d.tempo} anos de casa<br>Perfil: ${d.perfil}<br>Destaques: ${d.a1} | ${d.a2}<br>Avaliação: ${d.av}`,e))
+.on("mouseleave",hideTip);
+})();
+
+// Tabela + filtros
+const deptos=[...new Set(dados.map(d=>d.depto))].sort();
+deptos.forEach(d=>d3.select("#filtro-depto").append("option").text(d));
+function render(){
+const q=document.getElementById("busca").value.toLowerCase();
+const f=document.getElementById("filtro-depto").value;
+const res=dados.filter(d=>(!f||d.depto===f)&&(!q||(d.nome+d.cargo+d.depto+d.perfil+d.a1+d.a2).toLowerCase().includes(q)));
+d3.select("#corpo").selectAll("tr").data(res,d=>d.id).join("tr")
+.html(d=>`<td>${d.nome}</td><td>${d.cargo}</td><td>${d.depto}</td><td>${d.idade}</td><td>${d.tempo}</td><td>${d.perfil}</td><td>${d.a1}</td><td>${d.a2}</td><td><b>${d.av.toFixed(1)}</b></td>`);
+document.getElementById("contagem").textContent=`Mostrando ${res.length} de 30 funcionários.`;
+}
+document.getElementById("busca").addEventListener("input",render);
+document.getElementById("filtro-depto").addEventListener("change",render);
+render();
+</script>
+</body>
+</html>
