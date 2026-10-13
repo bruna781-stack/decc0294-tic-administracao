@@ -1,0 +1,10 @@
+periodo,admissoes,desligamentos,deslig_voluntarios,deslig_involuntarios,quadro_medio,quadro_ativo_fim,departamento_critico,talentos_perdidos,observacao
+2026-01,1,1,1,0,30,30,Comercial,0,pediu demissao - proposta salarial maior
+2026-02,0,1,0,1,30,29,Logistica,0,desligamento involuntario - baixo desempenho
+2026-03,1,0,0,0,29,30,-,0,reposicao Logistica
+2026-04,0,1,1,0,30,29,Operacoes,1,talento pediu demissao - falta crescimento
+2026-05,1,0,0,0,29,30,-,0,contratacao Operacoes
+2026-06,0,1,1,0,30,29,Atendimento,0,pediu demissao - clima/lideranca
+2026-07,1,0,0,0,29,30,-,0,reposicao Atendimento
+2026-08,0,1,0,1,30,29,Financeiro,0,corte custos - reestruturacao
+2026-09,0,0,0,0,29,29,-,0,mes estavel sem movimentacao
